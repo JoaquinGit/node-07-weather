@@ -1,7 +1,3 @@
-# node-06-restserver
+# node-07-weather
 
-* Base configuration for APIs Rest
-* Express.js: GET, POST, PUT, PATCH, DELETE
-* Middlewares
-* Logger (Winston)
-* Documentation (Swagger)
+Openweather and Mapbox APIs consumption using Axios.

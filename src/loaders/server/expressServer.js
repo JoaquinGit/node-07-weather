@@ -9,7 +9,8 @@ class ExpressServer {
     constructor() {
         this.app = express();
         this.port = config.port;
-        this.basePathUser = `${ config.api.prefix }/users`;
+        this.basePathWeather = `${ config.api.prefix }/weather`;
+        this.basePathCities = `${ config.api.prefix }/cities`;
 
         this._middlewares();
         this._swaggerConfig(); // poner al principio para que otro middleware no interfiera
@@ -21,23 +22,24 @@ class ExpressServer {
         this._errorHandler();
     }
 
-    // hace que express funcione con comunicación de content-type JSON
     _middlewares() {
+        // hace que express funcione con comunicación de content-type JSON
         this.app.use(express.json());
 
-        // loguea los request
+        // loguea los request por consola
         this.app.use(morgan('tiny'));
     }
-
+    
     _routes() {
         // ruta de request para que el sector de infraestructura de la empresa monitoree en todo momento que esté funcionando la app
         this.app.head("/status", (req, res) => {
             res.status(200).end();
         });
-
-        this.app.use( this.basePathUser, require('../../routes/users') );
+        
+        this.app.use( this.basePathWeather, require('../../routes/weather') );
+        this.app.use( this.basePathCities, require('../../routes/cities') );
     }
-
+    
     // response 404
     _notFound() {
         this.app.use((req, res, next) => {
@@ -46,7 +48,8 @@ class ExpressServer {
             next(err);
         });
     }
-
+    
+    // devuelve error al cliente
     _errorHandler(app) {
         this.app.use((err, req, res, next) => {
 
@@ -65,7 +68,7 @@ class ExpressServer {
 
         });
     }
-
+    
     _swaggerConfig() {
         this.app.use(
             config.swagger.path, 

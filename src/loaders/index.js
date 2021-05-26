@@ -1,6 +1,5 @@
 const ExpressServer = require('./server/expressServer');
 const config = require('../config');
-//const { loggers } = require('winston');
 const logger = require('./logger');
 
 module.exports = async () => {
